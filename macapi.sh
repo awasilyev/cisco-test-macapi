@@ -21,4 +21,7 @@ if ! echo "${mac}" | grep -iE '^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$' >/dev/null; 
   exit 3
 fi
 
-curl -s -H "X-Authentication-Token: ${api_key}" "https://api.macaddress.io/v1?output=json&search=${mac}"|jq -r .vendorDetails.companyName
+cat <<EOT >/tmp/headers
+X-Authentication-Token: ${api_key}
+EOT
+curl -s -H@/tmp/headers "https://api.macaddress.io/v1?output=json&search=${mac}"|jq -r .vendorDetails.companyName
